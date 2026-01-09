@@ -2,50 +2,37 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Google 4K Ultra</title>
     <style>
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; }
-        /* إطار العرض الكامل */
-        #web-container { width: 100%; height: 100%; border: none; }
+        body { margin: 0; background: #000; overflow: hidden; }
+        #app-canvas { width: 100vw; height: 100vh; border: none; }
     </style>
 </head>
 <body>
-    <iframe id="web-container" src="https://www.google.com" allowfullscreen></iframe>
+    <iframe id="app-canvas" src="https://www.google.com"></iframe>
 
     <script>
-        const frame = document.getElementById('web-container');
+        const view = document.getElementById('app-canvas');
 
-        // سكريبت الكنترولر القسري
-        document.addEventListener('keydown', function(e) {
-            const scrollStep = 150; // سرعة التمرير
+        // محاكي التحكم الخاص بـ webOS (Controller Script)
+        document.addEventListener('keydown', (e) => {
+            const step = 200;
+            const key = e.keyCode;
+
+            // حقن أوامر التمرير داخل الـ iframe
+            if (key === 40) window.scrollBy({top: step, behavior: 'smooth'}); // أسفل
+            if (key === 38) window.scrollBy({top: -step, behavior: 'smooth'}); // أعلى
             
-            // إرسال أمر التمرير مباشرة إلى نافذة الـ iframe
-            if (e.keyCode === 40) { // سهم لأسفل
-                frame.contentWindow.postMessage({ type: 'scroll', direction: 'down' }, '*');
-                window.scrollBy(0, scrollStep); 
-            }
-            if (e.keyCode === 38) { // سهم لأعلى
-                window.scrollBy(0, -scrollStep);
-            }
-            if (e.keyCode === 461) { // زر الرجوع
-                window.history.back();
+            // زر العودة (Back) - مقتبس من سكريبت يوتيوب
+            if (key === 461) {
+                e.preventDefault();
+                view.contentWindow.history.back();
             }
         });
 
-        // تفعيل التمرير عبر بكرة الريموت
-        window.addEventListener('wheel', function(e) {
+        // تفعيل "الماوس الافتراضي" عند تحريك البكرة
+        window.addEventListener('wheel', (e) => {
             window.scrollBy(0, e.deltaY);
         });
-
-        // محاولة إجبار المحتوى على التوجيه المباشر إذا فشل الـ iframe
-        frame.onerror = function() {
-            window.location.replace("https://www.google.com");
-        };
     </script>
 </body>
 </html>
-    </script>
-</body>
-</html>
-
-
