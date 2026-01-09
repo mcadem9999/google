@@ -3,46 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google 4K Controller</title>
+    <script src="https://webostv.developer.lge.com/sdk/cape/webOSTV.js"></script>
     <style>
-        body, html { 
-            margin: 0; padding: 0; width: 100%; height: 100%; 
-            overflow: auto !important;
-            background-color: #000;
-            -webkit-overflow-scrolling: touch;
-        }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #000; overflow: hidden; }
+        /* إطار وهمي للتحكم في الفوكس */
+        #focus-container { position: absolute; width: 1px; height: 1px; top: 0; left: 0; opacity: 0; }
     </style>
 </head>
 <body>
-    <script type="text/javascript">
-        // التوجه لجوجل مع تفعيل ميزات التصفح الكامل
-        window.location.replace("https://www.google.com");
+    <div id="focus-container" tabindex="0"></div>
 
-        // كود التحكم الشامل بالاتجاهات (وسط، يمين، يسار)
+    <script type="text/javascript">
+        // التوجه لجوجل
+        var win = window.location.replace("https://www.google.com");
+
+        // ملف التحكم (Controller) مدمج هنا لضمان السرعة
         document.addEventListener('keydown', function(e) {
-            const step = 150; // مقدار الحركة
+            // استخدام أوامر النظام للتحكم في التمرير في كل الاتجاهات
+            var scrollStep = 250; 
             switch(e.keyCode) {
-                case 40: // سهم لأسفل
-                    window.scrollBy(0, step);
-                    break;
-                case 38: // سهم لأعلى
-                    window.scrollBy(0, -step);
-                    break;
-                case 37: // سهم لليسار
-                    window.scrollBy(-step, 0);
-                    break;
-                case 39: // سهم لليمين
-                    window.scrollBy(step, 0);
-                    break;
-                case 461: // زر العودة
-                    window.history.back();
-                    break;
+                case 37: window.scrollBy(-scrollStep, 0); break; // يسار
+                case 38: window.scrollBy(0, -scrollStep); break; // أعلى
+                case 39: window.scrollBy(scrollStep, 0); break;  // يمين
+                case 40: window.scrollBy(0, scrollStep); break;  // أسفل
+                case 461: window.history.back(); break;         // زر الرجوع
             }
+            
+            // إجبار المتصفح على البقاء في وضع "النشاط"
+            document.getElementById('focus-container').focus();
         });
 
-        // تفعيل التمرير عبر "بكرة" الريموت السحري (Magic Remote Wheel)
-        window.addEventListener('wheel', function(e) {
-            window.scrollBy(0, e.deltaY);
+        // تفعيل ميزة "المؤشر السحري" للتصفح الحر
+        window.onload = function() {
+            document.getElementById('focus-container').focus();
+        };
+    </script>
+</body>
+</html>
         });
     </script>
 </body>
 </html>
+
