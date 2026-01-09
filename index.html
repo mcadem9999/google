@@ -1,55 +1,94 @@
 <!DOCTYPE html>
-<html>
+<html lang="ar">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart 4K Browser</title>
+    <title>Smart 4K Turbo Browser</title>
     <style>
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; font-family: sans-serif; }
-        
-        /* شريط الأدوات العلوي */
-        #toolbar {
-            position: fixed; top: 0; left: 0; width: 100%; height: 60px;
-            background: rgba(30, 30, 30, 0.9); display: flex; align-items: center;
-            padding: 0 15px; z-index: 9999; transition: transform 0.3s;
-            transform: translateY(-100%); /* مخفي افتراضياً */
+        body, html { 
+            margin: 0; padding: 0; width: 100%; height: 100%; 
+            background: #000; color: white; 
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
         }
-        body:hover #toolbar { transform: translateY(0); } /* يظهر عند تحريك الماوس للأعلى */
 
-        input#url-input {
-            flex: 1; height: 35px; border-radius: 20px; border: none; padding: 0 20px;
-            margin: 0 10px; font-size: 16px; outline: none;
+        /* شاشة التحميل الرائعة */
+        .loader {
+            border: 5px solid #333;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
         }
-        
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        #status-text { margin-top: 20px; font-size: 1.2rem; color: #aaa; }
+
+        /* شريط الإدخال (يظهر فقط عند الحاجة) */
+        #setup-ui { text-align: center; z-index: 100; }
+        input {
+            padding: 15px; width: 400px; border-radius: 30px; border: none;
+            font-size: 18px; outline: none; margin-bottom: 20px; text-align: center;
+        }
         button {
-            background: #444; color: white; border: none; padding: 8px 15px;
-            border-radius: 5px; cursor: pointer; font-weight: bold;
+            padding: 12px 30px; border-radius: 25px; border: none;
+            background: #3498db; color: white; font-weight: bold; cursor: pointer;
         }
-
-        #browser-frame { width: 100%; height: 100%; border: none; margin-top: 0; }
     </style>
 </head>
 <body>
 
-    <div id="toolbar">
-        <button onclick="window.history.back()">↩ رجوع</button>
-        <input type="text" id="url-input" placeholder="ادخل الرابط هنا (مثلاً youtube.com)..." onkeydown="if(event.keyCode==13) loadUrl()">
-        <button onclick="location.reload()">🔄 تحديث</button>
+    <div id="setup-ui">
+        <h1>Smart 4K Browser</h1>
+        <input type="text" id="url-input" placeholder="ادخل الرابط (مثلاً google.com)" onkeydown="if(event.keyCode==13) startBrowsing()">
+        <br>
+        <button onclick="startBrowsing()">انطلق بسرعة</button>
+        <p style="color: #666; margin-top: 20px;">اضغط على زر OK في الريموت للإدخال</p>
     </div>
 
-    <iframe id="browser-frame" src="https://www.google.com" allowfullscreen></iframe>
+    <div id="loading-ui" style="display: none;">
+        <div class="loader"></div>
+        <div id="status-text">جاري تشغيل المحرك بسرعة خرافية...</div>
+    </div>
 
     <script>
-        function loadUrl() {
-            var url = document.getElementById('url-input').value;
-            if (!url.startsWith('http')) url = 'https://' + url;
-            document.getElementById('browser-frame').src = url;
+        // دالة البدء
+        function startBrowsing() {
+            var url = document.getElementById('url-input').value.trim();
+            if (!url) return;
+
+            // التأكد من صيغة الرابط
+            if (!url.startsWith('http')) {
+                url = 'https://' + url;
+            }
+
+            // إخفاء الواجهة وإظهار التحميل
+            document.getElementById('setup-ui').style.display = 'none';
+            document.getElementById('loading-ui').style.display = 'block';
+
+            // أهم سطر للسرعة: التحويل المباشر
+            // هذا يلغي الـ iframe ويجعل الموقع هو التطبيق الأساسي
+            setTimeout(function() {
+                window.location.replace(url);
+            }, 500);
         }
 
-        // دعم زر العودة من الريموت (Back)
+        // معالجة أزرار الريموت
         document.addEventListener('keydown', function(e) {
-            if (e.keyCode === 461) window.history.back();
+            // زر العودة (Back) في LG WebOS
+            if (e.keyCode === 461) {
+                // إذا كنا في الصفحة الرئيسية للتطبيق، لا تفعل شيئاً أو اخرج
+                // لكن بعد التحويل، الموقع المستهدف سيتولى زر العودة
+                window.history.back();
+            }
         });
+
+        // جعل التركيز تلقائياً على خانة الإدخال عند الفتح
+        window.onload = function() {
+            document.getElementById('url-input').focus();
+        };
     </script>
 </body>
 </html>
