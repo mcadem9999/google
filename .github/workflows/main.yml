@@ -12,9 +12,12 @@ jobs:
       - name: Install CLI
         run: npm install -g @webosose/ares-cli
       - name: Package
-        run: ares-package .
+        run: |
+          # هذا السطر يبحث عن المجلد الصحيح الذي يحتوي الملفات
+          TARGET_DIR=$(find . -name appinfo.json -printf '%h\n' | head -n 1)
+          ares-package $TARGET_DIR
       - name: Upload
         uses: actions/upload-artifact@v4
         with:
-          name: Google-App
-          path: ./*.ipk
+          name: Google-App-4K
+          path: "**/*.ipk"
