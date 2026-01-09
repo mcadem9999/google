@@ -5,9 +5,7 @@
     "main": "index.html",
     "title": "google",
     "icon": "icon.png",
-    "resolution": "1920x1080",
-    "useBrowserHistory": true,
-    "handleBackKey": true
     "uiRevision": 2
 }
+
 
