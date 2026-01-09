@@ -3,21 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Fast Browser</title>
     <style>
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background-color: #000; }
-        /* استخدام الـ Webview المتطور المدعوم من LG */
-        #browser { width: 100%; height: 100%; border: none; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+        body { margin: 0; background-color: #000; display: flex; justify-content: center; align-items: center; height: 100vh; color: white; font-family: sans-serif; }
+        .loader { border: 5px solid #f3f3f3; border-top: 5px solid #3498db; border-radius: 50%; width: 50px; height: 50px; animation: spin 2s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
-    <iframe id="browser" src="https://www.google.com" allow="autoplay; encrypted-media; fullscreen" sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"></iframe>
+    <div class="loader"></div>
+    <script type="text/javascript">
+        // هذا الأمر يخبر الشاشة بفتح جوجل كصفحة رئيسية للتطبيق
+        // مما يسمح بالتمرير (Scroll) والدخول لكل المواقع دون قيود
+        setTimeout(function() {
+            window.location.replace("https://www.google.com");
+        }, 100);
 
-    <script>
-        // كود لمنع الخروج المفاجئ (Crashing)
-        window.onerror = function() { return true; };
-        
-        // كود لتحسين التمرير باستخدام الريموت
+        // كود لمنع الكراش وحل مشكلة أزرار الريموت
         document.addEventListener('keydown', function(e) {
+            if (e.keyCode === 461) { // زر العودة في ريموت LG
+                window.history.back();
+            }
+        });
+    </script>
+</body>
+</html>
             const frame = document.getElementById('browser');
             if(e.keyCode == 40) frame.contentWindow.scrollBy(0, 100); // سهم لأسفل
             if(e.keyCode == 38) frame.contentWindow.scrollBy(0, -100); // سهم لأعلى
@@ -25,3 +35,4 @@
     </script>
 </body>
 </html>
+
