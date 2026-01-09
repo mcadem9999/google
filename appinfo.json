@@ -1,11 +1,12 @@
 {
-    "id": "com.google.browser",
+    "id": "com.google.pro.browser",
     "version": "1.0.0",
     "type": "web",
     "main": "index.html",
-    "title": "google",
+    "title": "Google 4K Pro",
     "icon": "icon.png",
-    "uiRevision": 2
+    "uiRevision": 2,
+    "resolution": "1920x1080",
+    "supportsMouse": true,
+    "handleCaptivePortal": true
 }
-
-
