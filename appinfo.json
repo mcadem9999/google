@@ -8,5 +8,5 @@
     "uiRevision": 2,
     "resolution": "1920x1080",
     "supportsMouse": true,
-    "handleCaptivePortal": true
+    "disableBackHistoryAPI": false
 }
