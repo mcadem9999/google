@@ -2,12 +2,26 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Google</title>
-    <script type="text/javascript">
-        // هذا الكود سيقوم بتوجيه التطبيق فوراً لفتح جوجل بملء الشاشة
-        window.location.href = "https://www.google.com";
-    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background-color: #000; }
+        /* استخدام الـ Webview المتطور المدعوم من LG */
+        #browser { width: 100%; height: 100%; border: none; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+    </style>
 </head>
-<body style="background-color: black;">
+<body>
+    <iframe id="browser" src="https://www.google.com" allow="autoplay; encrypted-media; fullscreen" sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"></iframe>
+
+    <script>
+        // كود لمنع الخروج المفاجئ (Crashing)
+        window.onerror = function() { return true; };
+        
+        // كود لتحسين التمرير باستخدام الريموت
+        document.addEventListener('keydown', function(e) {
+            const frame = document.getElementById('browser');
+            if(e.keyCode == 40) frame.contentWindow.scrollBy(0, 100); // سهم لأسفل
+            if(e.keyCode == 38) frame.contentWindow.scrollBy(0, -100); // سهم لأعلى
+        });
+    </script>
 </body>
 </html>
