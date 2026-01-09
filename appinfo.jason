@@ -1,0 +1,9 @@
+{
+    "id": "com.google.browser",
+    "version": "1.0.0",
+    "type": "web",
+    "main": "index.html",
+    "title": "google",
+    "icon": "icon.png",
+    "uiRevision": 2
+}
