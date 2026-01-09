@@ -1,12 +1,14 @@
 {
-    "id": "com.google.pro.browser",
+    "id": "com.fast.google.pro",
     "version": "1.0.0",
     "type": "web",
     "main": "index.html",
-    "title": "Google 4K Pro",
+    "title": "Google Ultra",
     "icon": "icon.png",
     "uiRevision": 2,
     "resolution": "1920x1080",
+    "transparent": false,
     "supportsMouse": true,
-    "disableBackHistoryAPI": false
+    "disableBackHistoryAPI": false,
+    "deeplinkingServer": "https://www.google.com"
 }
