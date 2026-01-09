@@ -2,47 +2,50 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google 4K Controller</title>
-    <script src="https://webostv.developer.lge.com/sdk/cape/webOSTV.js"></script>
+    <title>Google 4K Ultra</title>
     <style>
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #000; overflow: hidden; }
-        /* إطار وهمي للتحكم في الفوكس */
-        #focus-container { position: absolute; width: 1px; height: 1px; top: 0; left: 0; opacity: 0; }
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; }
+        /* إطار العرض الكامل */
+        #web-container { width: 100%; height: 100%; border: none; }
     </style>
 </head>
 <body>
-    <div id="focus-container" tabindex="0"></div>
+    <iframe id="web-container" src="https://www.google.com" allowfullscreen></iframe>
 
-    <script type="text/javascript">
-        // التوجه لجوجل
-        var win = window.location.replace("https://www.google.com");
+    <script>
+        const frame = document.getElementById('web-container');
 
-        // ملف التحكم (Controller) مدمج هنا لضمان السرعة
+        // سكريبت الكنترولر القسري
         document.addEventListener('keydown', function(e) {
-            // استخدام أوامر النظام للتحكم في التمرير في كل الاتجاهات
-            var scrollStep = 250; 
-            switch(e.keyCode) {
-                case 37: window.scrollBy(-scrollStep, 0); break; // يسار
-                case 38: window.scrollBy(0, -scrollStep); break; // أعلى
-                case 39: window.scrollBy(scrollStep, 0); break;  // يمين
-                case 40: window.scrollBy(0, scrollStep); break;  // أسفل
-                case 461: window.history.back(); break;         // زر الرجوع
-            }
+            const scrollStep = 150; // سرعة التمرير
             
-            // إجبار المتصفح على البقاء في وضع "النشاط"
-            document.getElementById('focus-container').focus();
+            // إرسال أمر التمرير مباشرة إلى نافذة الـ iframe
+            if (e.keyCode === 40) { // سهم لأسفل
+                frame.contentWindow.postMessage({ type: 'scroll', direction: 'down' }, '*');
+                window.scrollBy(0, scrollStep); 
+            }
+            if (e.keyCode === 38) { // سهم لأعلى
+                window.scrollBy(0, -scrollStep);
+            }
+            if (e.keyCode === 461) { // زر الرجوع
+                window.history.back();
+            }
         });
 
-        // تفعيل ميزة "المؤشر السحري" للتصفح الحر
-        window.onload = function() {
-            document.getElementById('focus-container').focus();
+        // تفعيل التمرير عبر بكرة الريموت
+        window.addEventListener('wheel', function(e) {
+            window.scrollBy(0, e.deltaY);
+        });
+
+        // محاولة إجبار المحتوى على التوجيه المباشر إذا فشل الـ iframe
+        frame.onerror = function() {
+            window.location.replace("https://www.google.com");
         };
     </script>
 </body>
 </html>
-        });
     </script>
 </body>
 </html>
+
 
